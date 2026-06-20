@@ -3,21 +3,24 @@ class LoadRecord:
     Запись учебной нагрузки.
 
     Параметры:
-        group       — учебная группа
-        discipline  — дисциплина
-        load_type   — вид нагрузки
-        teacher     — преподаватель
-        hours       — количество часов
+        semester    - семестр
+        group       - учебная группа
+        discipline  - дисциплина
+        load_type   - вид нагрузки
+        teacher     - преподаватель
+        hours       - количество часов
     """
 
     def __init__(
             self,
-            group,
-            discipline,
-            load_type,
-            teacher,
-            hours
+            semester: str,
+            group: str,
+            discipline: str,
+            load_type: str,
+            teacher: str,
+            hours: float
     ):
+        self.semester = semester
         self.group = group
         self.discipline = discipline
         self.load_type = load_type
@@ -40,12 +43,9 @@ class LoadRecord:
         Проверяет наличие преподавателя.
         """
 
-        return bool(str(self.teacher).strip())
+        return self.teacher != ""
 
-    def is_same_load(
-            self,
-            other: "LoadRecord"
-    ) -> bool:
+    def is_same_load(self, other: "LoadRecord") -> bool:
         """
         Проверяет совпадение нагрузки.
         """
@@ -58,9 +58,11 @@ class LoadRecord:
     def __repr__(self) -> str:
         return (
             f"LoadRecord("
+            f"semester='{self.semester}', "
             f"group='{self.group}', "
             f"discipline='{self.discipline}', "
             f"load_type='{self.load_type}', "
             f"teacher='{self.teacher}', "
-            f"hours={self.hours})"
+            f"hours={self.hours}"
+            f")"
         )
