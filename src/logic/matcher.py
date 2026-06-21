@@ -1,4 +1,4 @@
-from src.models import LoadRecord
+from src.models.load_record import LoadRecord
 
 
 class Matcher:
@@ -17,7 +17,7 @@ class Matcher:
         """
 
         self.records_by_key: dict[
-            tuple[str, str, str],
+            tuple[str, str, str, str],
             list[LoadRecord]
         ] = {}
 
@@ -47,15 +47,34 @@ class Matcher:
 
             self.records_by_key[key].append(record)
 
+    # def find_matches(
+    #         self,
+    #         current_record: LoadRecord
+    # ) -> list[LoadRecord]:
+    #     """
+    #     Возвращает все совпадающие записи
+    #     прошлого года.
+    #     """
+    #
+    #     key = current_record.get_match_key()
+    #
+    #     return self.records_by_key.get(key, [])
+
     def find_matches(
             self,
             current_record: LoadRecord
     ) -> list[LoadRecord]:
-        """
-        Возвращает все совпадающие записи
-        прошлого года.
-        """
 
         key = current_record.get_match_key()
 
-        return self.records_by_key.get(key, [])
+        matches = self.records_by_key.get(key, [])
+
+        if len(matches) > 5:
+            print(
+                "МНОГО СОВПАДЕНИЙ:",
+                key,
+                "->",
+                len(matches)
+            )
+
+        return matches

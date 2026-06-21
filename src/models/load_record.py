@@ -27,12 +27,13 @@ class LoadRecord:
         self.teacher = teacher
         self.hours = hours
 
-    def get_match_key(self) -> tuple[str, str, str]:
+    def get_match_key(self) -> tuple[str, str, str, str]:
         """
         Возвращает ключ для поиска совпадений.
         """
 
         return (
+            self.semester,
             self.group,
             self.discipline,
             self.load_type

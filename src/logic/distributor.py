@@ -1,4 +1,4 @@
-from src.models import LoadRecord
+from src.models.load_record import LoadRecord
 
 
 class Distributor:
@@ -25,9 +25,6 @@ class Distributor:
         if not valid_records:
             return []
 
-        if len(valid_records) <= 2:
-            return []
-
         total_hours = self._get_total_hours(valid_records)
 
         if total_hours <= 0:
@@ -35,9 +32,17 @@ class Distributor:
 
         result: list[LoadRecord] = []
 
-        for old_record in valid_records:
+        teacher_hours = {}
 
-            share = old_record.hours / total_hours
+        for record in valid_records:
+
+            if record.teacher not in teacher_hours:
+                teacher_hours[record.teacher] = 0.0
+
+            teacher_hours[record.teacher] += record.hours
+
+        for teacher, hours in teacher_hours.items():
+            share = hours / total_hours
 
             new_hours = current_record.hours * share
 
@@ -46,7 +51,7 @@ class Distributor:
                 group=current_record.group,
                 discipline=current_record.discipline,
                 load_type=current_record.load_type,
-                teacher=old_record.teacher,
+                teacher=teacher,
                 hours=new_hours
             )
 

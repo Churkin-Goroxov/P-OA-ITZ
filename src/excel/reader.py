@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.models import LoadRecord
+from src.models.load_record import LoadRecord
 
 
 class Reader:
