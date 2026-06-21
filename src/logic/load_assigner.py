@@ -5,32 +5,40 @@ from src.models.load_record import LoadRecord
 
 class LoadAssigner:
     """
-    Координирует процесс поиска соответствий и распределения
-    нагрузки между преподавателями на основе данных прошлого года.
+    Координирует процесс поиска соответствий и распределения нагрузки между преподавателями
+    на основе данных прошлого года
     """
 
     def __init__(self, old_records: list[LoadRecord]) -> None:
+        """
+        Инициализирует компоненты поиска совпадений и распределения нагрузки
+        """
 
         self.matcher = Matcher(old_records)
         self.distributor = Distributor()
 
     def assign(self, current_records: list[LoadRecord]) -> list[LoadRecord]:
         """
-        Обрабатывает записи текущего года, находит соответствующие записи
-        прошлого года и выполняет распределение нагрузки.
+        Обрабатывает записи текущего года, находит соответствующие записи прошлого года
+        и выполняет распределение нагрузки
         """
 
         result: list[LoadRecord] = []
 
+        # Обработка каждой нагрузки текущего года
         for current_record in current_records:
+
+            # Пропуск нагрузок, не входящих в задачу распределения
             if self._is_special_load(current_record):
                 continue
 
+            # Поиск соответствующих записей прошлого года
             matches = self.matcher.find_matches(current_record)
 
             if not matches:
                 continue
 
+            # Распределение часов между преподавателями
             distributed_records = self.distributor.distribute(current_record, matches)
 
             if distributed_records:
@@ -40,13 +48,18 @@ class LoadAssigner:
 
     def _is_special_load(self, record: LoadRecord) -> bool:
         """
-        Определяет нагрузки, которые должны обрабатываться
-        отдельно на этапе добалансировки.
+        Проверяет, относится ли нагрузка к категориям, которые не входят в задачу распределения
         """
 
         text = record.discipline.lower() + " " + record.load_type.lower()
 
-        keywords = ["диплом", "руководство", "магистр", "магистрант", "вкр"]
+        keywords = [
+            "диплом",
+            "руководство",
+            "магистр",
+            "магистрант",
+            "вкр",
+        ]
 
         for keyword in keywords:
             if keyword in text:

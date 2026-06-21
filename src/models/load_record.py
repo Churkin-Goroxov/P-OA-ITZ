@@ -1,8 +1,8 @@
 class LoadRecord:
     """
-    Запись учебной нагрузки.
+    Запись учебной нагрузки
 
-    Параметры:
+    Поля:
         group       - учебная группа
         discipline  - дисциплина
         load_type   - вид нагрузки
@@ -11,8 +11,13 @@ class LoadRecord:
     """
 
     def __init__(
-        self, group: str, discipline: str, load_type: str, teacher: str, hours: float
-    ):
+        self,
+        group: str,
+        discipline: str,
+        load_type: str,
+        teacher: str,
+        hours: float
+    ) -> None:
         self.group = group
         self.discipline = discipline
         self.load_type = load_type
@@ -21,19 +26,23 @@ class LoadRecord:
 
     def get_match_key(self) -> tuple[str, str, str]:
         """
-        Возвращает ключ для поиска совпадений.
+        Возвращает ключ для поиска соответствующей нагрузки
         """
 
-        return (self.group, self.discipline, self.load_type)
+        return (
+            self.group,
+            self.discipline,
+            self.load_type
+        )
 
     def has_teacher(self) -> bool:
         """
-        Проверяет наличие преподавателя.
+        Проверяет наличие преподавателя
         """
 
         return self.teacher != ""
 
-    # Инструмент для отладки
+    # Удобное отображение объекта при отладке
     def __repr__(self) -> str:
         return (
             f"LoadRecord("

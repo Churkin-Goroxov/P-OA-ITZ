@@ -5,15 +5,12 @@ from src.models.load_record import LoadRecord
 
 class Reader:
     """
-    Читает Excel-файлы нагрузки
-    и преобразует строки таблицы
-    в объекты LoadRecord.
+    Читает Excel-файлы нагрузки и преобразует строки таблицы в объекты LoadRecord
     """
 
     def read(self, file_path: str, sheet_name: str | int = 0) -> list[LoadRecord]:
         """
-        Загружает Excel-файл
-        и возвращает список записей.
+        Загружает Excel-файл и возвращает список записей
         """
 
         dataframe = pd.read_excel(file_path, sheet_name=sheet_name)
@@ -21,9 +18,11 @@ class Reader:
         records: list[LoadRecord] = []
 
         for _, row in dataframe.iterrows():
+            # Остановка на первой полностью пустой строке
             if self._is_empty_row(row):
                 break
 
+            # Пропуск строк без описания нагрузки
             if (
                 self._get_string_value(row["Группы"]) == ""
                 and self._get_string_value(row["Дисциплина"]) == ""
@@ -45,8 +44,7 @@ class Reader:
 
     def _is_empty_row(self, row) -> bool:
         """
-        Проверяет, является ли строка
-        полностью пустой.
+        Проверяет, является ли строка полностью пустой и обозначающей конец основной таблицы
         """
 
         return (
@@ -58,8 +56,8 @@ class Reader:
 
     def _get_string_value(self, value) -> str:
         """
-        Возвращает строку без пробелов.
-        Для пустых ячеек возвращает "".
+        Возвращает строку без пробелов
+        Для пустых ячеек возвращает ""
         """
 
         if pd.isna(value):
@@ -69,7 +67,7 @@ class Reader:
 
     def _get_float_value(self, value) -> float:
         """
-        Возвращает числовое значение.
+        Возвращает числовое значение
         Для пустых ячеек возвращает 0.0
         """
 

@@ -4,9 +4,16 @@ from src.models.load_record import LoadRecord
 
 
 class Writer:
-    def write(self, records: list[LoadRecord], file_path: str) -> None:
+    """
+    Сохраняет список записей нагрузки в Excel-файл
+    """
 
-        data = []
+    def write(self, records: list[LoadRecord], file_path: str) -> None:
+        """
+        Записывает список нагрузок в Excel-файл
+        """
+
+        data: list[dict[str, str | float]] = []
 
         for record in records:
             data.append(

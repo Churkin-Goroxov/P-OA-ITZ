@@ -3,25 +3,28 @@ from src.models.load_record import LoadRecord
 
 class LoadAggregator:
     """
-    Объединяет одинаковые записи нагрузки
-    и суммирует их часы.
+    Объединяет одинаковые записи нагрузки и суммирует их часы
     """
 
     def aggregate(self, records: list[LoadRecord]) -> list[LoadRecord]:
+        """
+        Объединяет записи с одинаковым ключом и суммирует их часы
+        """
 
-        records_by_key: dict[tuple[str, str, str], float] = {}
+        # Суммарные часы по каждой нагрузке
+        hours_by_key: dict[tuple[str, str, str], float] = {}
 
         for record in records:
             key = record.get_match_key()
 
-            if key not in records_by_key:
-                records_by_key[key] = 0.0
+            if key not in hours_by_key:
+                hours_by_key[key] = 0.0
 
-            records_by_key[key] += record.hours
+            hours_by_key[key] += record.hours
 
         result: list[LoadRecord] = []
 
-        for key, hours in records_by_key.items():
+        for key, hours in hours_by_key.items():
             group, discipline, load_type = key
 
             result.append(

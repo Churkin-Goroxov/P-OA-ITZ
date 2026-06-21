@@ -3,19 +3,16 @@ from src.models.load_record import LoadRecord
 
 class Distributor:
     """
-    Распределяет нагрузку пропорционально
-    прошлогоднему распределению часов.
+    Распределяет нагрузку пропорционально прошлогоднему распределению часов
     """
 
-    def distribute(
-        self, current_record: LoadRecord, old_records: list[LoadRecord]
-    ) -> list[LoadRecord]:
+    def distribute(self, current_record: LoadRecord,old_records: list[LoadRecord]) -> list[LoadRecord]:
         """
-        Распределяет часы текущей записи между
-        преподавателями из прошлогодних записей.
+        Распределяет часы текущей записи между преподавателями пропорционально их нагрузке в прошлом году
 
-        Возвращает список новых записей
-        с рассчитанными часами.
+        Распределение выполняется только для нагрузок, где в прошлом году участвовало более двух преподавателей
+
+        Возвращает новые записи с рассчитанными часами
         """
 
         valid_records = self._get_valid_records(old_records)
@@ -30,6 +27,7 @@ class Distributor:
 
         result: list[LoadRecord] = []
 
+        # Суммарные часы каждого преподавателя
         teacher_hours: dict[str, float] = {}
 
         for record in valid_records:
@@ -42,6 +40,7 @@ class Distributor:
         if len(teacher_hours) <= 2:
             return []
 
+        # Распределение часов пропорционально прошлому году
         for teacher, hours in teacher_hours.items():
             share = hours / total_hours
 
@@ -61,11 +60,10 @@ class Distributor:
 
     def _get_valid_records(self, records: list[LoadRecord]) -> list[LoadRecord]:
         """
-        Оставляет только записи с преподавателем
-        и положительным количеством часов.
+        Оставляет только записи с преподавателем и положительным количеством часов
         """
 
-        valid_records = []
+        valid_records: list[LoadRecord] = []
 
         for record in records:
             if not record.has_teacher():
@@ -80,7 +78,7 @@ class Distributor:
 
     def _get_total_hours(self, records: list[LoadRecord]) -> float:
         """
-        Возвращает суммарное количество часов.
+        Возвращает суммарное количество часов
         """
 
         total_hours = 0.0
