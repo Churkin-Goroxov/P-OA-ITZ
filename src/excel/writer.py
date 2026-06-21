@@ -4,20 +4,18 @@ from src.models.load_record import LoadRecord
 
 
 class Writer:
-
     def write(self, records: list[LoadRecord], file_path: str) -> None:
 
         data = []
 
         for record in records:
-
             data.append(
                 {
                     "Группы": record.group,
                     "Дисциплина": record.discipline,
                     "Вид нагрузки": record.load_type,
                     "ФИО": record.teacher,
-                    "Нагрузка": record.hours
+                    "Нагрузка": record.hours,
                 }
             )
 

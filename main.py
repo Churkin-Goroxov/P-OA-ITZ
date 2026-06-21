@@ -11,11 +11,11 @@ autumn_records = reader.read("src/data/Список 15вар - осень.xls")
 
 spring_records = reader.read("src/data/Список 15вар - весна.xls")
 
-current_records = (autumn_records + spring_records)
+current_records = autumn_records + spring_records
 
 aggregator = LoadAggregator()
 
-current_records = (aggregator.aggregate(current_records))
+current_records = aggregator.aggregate(current_records)
 
 assigner = LoadAssigner(old_records)
 

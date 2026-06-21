@@ -23,7 +23,6 @@ class LoadAssigner:
         result: list[LoadRecord] = []
 
         for current_record in current_records:
-
             if self._is_special_load(current_record):
                 continue
 
@@ -32,12 +31,7 @@ class LoadAssigner:
             if not matches:
                 continue
 
-            distributed_records = (
-                self.distributor.distribute(
-                    current_record,
-                    matches
-                )
-            )
+            distributed_records = self.distributor.distribute(current_record, matches)
 
             if distributed_records:
                 result.extend(distributed_records)
@@ -50,15 +44,9 @@ class LoadAssigner:
         отдельно на этапе добалансировки.
         """
 
-        text = (record.discipline.lower() + " " + record.load_type.lower())
+        text = record.discipline.lower() + " " + record.load_type.lower()
 
-        keywords = [
-            "диплом",
-            "руководство",
-            "магистр",
-            "магистрант",
-            "вкр"
-        ]
+        keywords = ["диплом", "руководство", "магистр", "магистрант", "вкр"]
 
         for keyword in keywords:
             if keyword in text:

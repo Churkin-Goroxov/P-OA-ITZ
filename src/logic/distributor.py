@@ -7,7 +7,9 @@ class Distributor:
     прошлогоднему распределению часов.
     """
 
-    def distribute(self, current_record: LoadRecord, old_records: list[LoadRecord]) -> list[LoadRecord]:
+    def distribute(
+        self, current_record: LoadRecord, old_records: list[LoadRecord]
+    ) -> list[LoadRecord]:
         """
         Распределяет часы текущей записи между
         преподавателями из прошлогодних записей.
@@ -31,7 +33,6 @@ class Distributor:
         teacher_hours: dict[str, float] = {}
 
         for record in valid_records:
-
             if record.teacher not in teacher_hours:
                 teacher_hours[record.teacher] = 0.0
 
@@ -51,7 +52,7 @@ class Distributor:
                 discipline=current_record.discipline,
                 load_type=current_record.load_type,
                 teacher=teacher,
-                hours=new_hours
+                hours=new_hours,
             )
 
             result.append(new_record)
@@ -67,7 +68,6 @@ class Distributor:
         valid_records = []
 
         for record in records:
-
             if not record.has_teacher():
                 continue
 

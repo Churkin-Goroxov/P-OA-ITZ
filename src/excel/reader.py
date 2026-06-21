@@ -21,14 +21,13 @@ class Reader:
         records: list[LoadRecord] = []
 
         for _, row in dataframe.iterrows():
-
             if self._is_empty_row(row):
                 break
 
             if (
-                    self._get_string_value(row["Группы"]) == ""
-                    and self._get_string_value(row["Дисциплина"]) == ""
-                    and self._get_string_value(row["Вид нагрузки"]) == ""
+                self._get_string_value(row["Группы"]) == ""
+                and self._get_string_value(row["Дисциплина"]) == ""
+                and self._get_string_value(row["Вид нагрузки"]) == ""
             ):
                 continue
 
@@ -37,7 +36,7 @@ class Reader:
                 discipline=self._get_string_value(row["Дисциплина"]),
                 load_type=self._get_string_value(row["Вид нагрузки"]),
                 teacher=self._get_string_value(row["ФИО"]),
-                hours=self._get_float_value(row["Нагрузка"])
+                hours=self._get_float_value(row["Нагрузка"]),
             )
 
             records.append(record)

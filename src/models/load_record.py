@@ -11,12 +11,7 @@ class LoadRecord:
     """
 
     def __init__(
-            self,
-            group: str,
-            discipline: str,
-            load_type: str,
-            teacher: str,
-            hours: float
+        self, group: str, discipline: str, load_type: str, teacher: str, hours: float
     ):
         self.group = group
         self.discipline = discipline
@@ -29,11 +24,7 @@ class LoadRecord:
         Возвращает ключ для поиска совпадений.
         """
 
-        return (
-            self.group,
-            self.discipline,
-            self.load_type
-        )
+        return (self.group, self.discipline, self.load_type)
 
     def has_teacher(self) -> bool:
         """

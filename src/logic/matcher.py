@@ -13,10 +13,7 @@ class Matcher:
         для быстрого поиска.
         """
 
-        self.records_by_key: dict[
-            tuple[str, str, str],
-            list[LoadRecord]
-        ] = {}
+        self.records_by_key: dict[tuple[str, str, str], list[LoadRecord]] = {}
 
         self._build_index(old_records)
 
@@ -33,7 +30,6 @@ class Matcher:
         """
 
         for record in records:
-
             key = record.get_match_key()
 
             if key not in self.records_by_key:
