@@ -3,7 +3,6 @@ class LoadRecord:
     Запись учебной нагрузки.
 
     Параметры:
-        semester    - семестр
         group       - учебная группа
         discipline  - дисциплина
         load_type   - вид нагрузки
@@ -13,27 +12,24 @@ class LoadRecord:
 
     def __init__(
             self,
-            semester: str,
             group: str,
             discipline: str,
             load_type: str,
             teacher: str,
             hours: float
     ):
-        self.semester = semester
         self.group = group
         self.discipline = discipline
         self.load_type = load_type
         self.teacher = teacher
         self.hours = hours
 
-    def get_match_key(self) -> tuple[str, str, str, str]:
+    def get_match_key(self) -> tuple[str, str, str]:
         """
         Возвращает ключ для поиска совпадений.
         """
 
         return (
-            self.semester,
             self.group,
             self.discipline,
             self.load_type
@@ -46,20 +42,10 @@ class LoadRecord:
 
         return self.teacher != ""
 
-    def is_same_load(self, other: "LoadRecord") -> bool:
-        """
-        Проверяет совпадение нагрузки.
-        """
-        if not isinstance(other, LoadRecord):
-            return False
-
-        return self.get_match_key() == other.get_match_key()
-
     # Инструмент для отладки
     def __repr__(self) -> str:
         return (
             f"LoadRecord("
-            f"semester='{self.semester}', "
             f"group='{self.group}', "
             f"discipline='{self.discipline}', "
             f"load_type='{self.load_type}', "

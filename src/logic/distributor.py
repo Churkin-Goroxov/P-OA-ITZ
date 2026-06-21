@@ -7,11 +7,7 @@ class Distributor:
     прошлогоднему распределению часов.
     """
 
-    def distribute(
-            self,
-            current_record: LoadRecord,
-            old_records: list[LoadRecord]
-    ) -> list[LoadRecord]:
+    def distribute(self, current_record: LoadRecord, old_records: list[LoadRecord]) -> list[LoadRecord]:
         """
         Распределяет часы текущей записи между
         преподавателями из прошлогодних записей.
@@ -32,7 +28,7 @@ class Distributor:
 
         result: list[LoadRecord] = []
 
-        teacher_hours = {}
+        teacher_hours: dict[str, float] = {}
 
         for record in valid_records:
 
@@ -41,13 +37,16 @@ class Distributor:
 
             teacher_hours[record.teacher] += record.hours
 
+        # Основное условие задания по количеству преподавателей
+        if len(teacher_hours) <= 2:
+            return []
+
         for teacher, hours in teacher_hours.items():
             share = hours / total_hours
 
             new_hours = current_record.hours * share
 
             new_record = LoadRecord(
-                semester=current_record.semester,
                 group=current_record.group,
                 discipline=current_record.discipline,
                 load_type=current_record.load_type,
@@ -59,10 +58,7 @@ class Distributor:
 
         return result
 
-    def _get_valid_records(
-            self,
-            records: list[LoadRecord]
-    ) -> list[LoadRecord]:
+    def _get_valid_records(self, records: list[LoadRecord]) -> list[LoadRecord]:
         """
         Оставляет только записи с преподавателем
         и положительным количеством часов.
@@ -82,10 +78,7 @@ class Distributor:
 
         return valid_records
 
-    def _get_total_hours(
-            self,
-            records: list[LoadRecord]
-    ) -> float:
+    def _get_total_hours(self, records: list[LoadRecord]) -> float:
         """
         Возвращает суммарное количество часов.
         """

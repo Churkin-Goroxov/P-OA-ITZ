@@ -10,38 +10,29 @@ class Reader:
     в объекты LoadRecord.
     """
 
-    def read(
-            self,
-            file_path: str,
-            sheet_name: str | int = 0,
-            semester: str = ""
-    ) -> list[LoadRecord]:
+    def read(self, file_path: str, sheet_name: str | int = 0) -> list[LoadRecord]:
         """
         Загружает Excel-файл
         и возвращает список записей.
         """
 
-        dataframe = pd.read_excel(
-            file_path,
-            sheet_name=sheet_name
-        )
+        dataframe = pd.read_excel(file_path, sheet_name=sheet_name)
 
         records: list[LoadRecord] = []
-
-        has_semester_column = ("семестр" in dataframe.columns)
 
         for _, row in dataframe.iterrows():
 
             if self._is_empty_row(row):
                 break
 
-            current_semester = semester
-
-            if has_semester_column:
-                current_semester = (self._get_string_value(row["семестр"]))
+            if (
+                    self._get_string_value(row["Группы"]) == ""
+                    and self._get_string_value(row["Дисциплина"]) == ""
+                    and self._get_string_value(row["Вид нагрузки"]) == ""
+            ):
+                continue
 
             record = LoadRecord(
-                semester=current_semester,
                 group=self._get_string_value(row["Группы"]),
                 discipline=self._get_string_value(row["Дисциплина"]),
                 load_type=self._get_string_value(row["Вид нагрузки"]),
